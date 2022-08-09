@@ -1,27 +1,19 @@
 const express = require('express'); 
 const { allowedNodeEnvironmentFlags } = require('process');
+const date = require(`${__dirname}/date.js`);
+
 const app = express(); 
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
-let newListItems =["Buy food", "Cook Food", "Eat Food"]; 
-let workitems = [];
+const newListItems =[]; 
+const workitems = [];
 
 app.get('/', (req, res) =>{
 
-    let options = {
-        weekday :"long", 
-        day : "numeric", 
-        month : "long"
-    }; 
-
-    let today = new Date();
-
-
-    let day = today.toLocaleDateString("en-US", options);
-
+    let day = date.getDate(); 
     res.render('list', {listType: day, newListItems : newListItems});
 }); 
 
@@ -55,6 +47,7 @@ app.post("/work", (req, res) => {
     res.redirect("/work");
 })
 
+//listening on local Port 3000
 app.listen(3000, () =>{
     console.log("Listening on PORT 3000");
 });
